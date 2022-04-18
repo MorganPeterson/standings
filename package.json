@@ -10,6 +10,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-navigation/native": "^6.0.10",
+    "@react-navigation/native-stack": "^6.6.1",
     "@types/react-native-table-component": "^1.2.4",
     "expo": "~44.0.0",
     "expo-sqlite": "~10.1.0",

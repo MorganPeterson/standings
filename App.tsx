@@ -1,40 +1,26 @@
-import { useEffect } from 'react'
-import { StyleSheet, SafeAreaView, ScrollView } from 'react-native'
-import League from './standings/League'
-import * as SQLite from 'expo-sqlite'
-import {
-    openDatabase,
-    createStandingsTable
-} from './standings/database'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import MLBStandings from './standings/MLB/MLBStandings'
+import HomeScreen from './standings/HomeScreen'
+
+const Stack = createNativeStackNavigator()
 
 export default function App() {
-    useEffect(() => {
-        openDatabase().then((db: SQLite.WebSQLDatabase) => {
-            createStandingsTable(db)
-        })
-    }, [])
-
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <League
-                    leagueId={103}
-                    leagueName='American League'
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{ title: 'Standings' }}
                 />
-                <League
-                    leagueId={104}
-                    leagueName='National League'
+                <Stack.Screen
+                    name="MLBStandings"
+                    component={MLBStandings}
+                    options={{ title: 'MLB Standings'}}
                 />
-            </ScrollView>
-        </SafeAreaView>
+            </Stack.Navigator>
+        </NavigationContainer>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginLeft: 5,
-        marginRight: 5,
-        marginTop: 40
-    }
-})
