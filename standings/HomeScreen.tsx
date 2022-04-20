@@ -3,8 +3,10 @@ import { View, Pressable, Text, StyleSheet } from 'react-native'
 export default function HomeScreen({ navigation }: any) {
     return (
         <View style={styles.view}>
-            <Pressable style={styles.button} onPress={() => navigation.navigate('MLBStandings')}>
-                <Text style={styles.text} >MLB Standings</Text>
+            <Pressable
+                style={styles.button}
+                onPress={() => navigation.navigate('MLBStandings')}>
+                <Text style={styles.text}>MLB Standings</Text>
             </Pressable>
         </View>
     )

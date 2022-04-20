@@ -1,5 +1,6 @@
+const div: string = ' Division'
+
 function divisionName(id: number): string {
-    const div: string = ' Division'
     switch (id) {
         case 200: return `Western ${div}`
         case 201: return `Eastern ${div}`

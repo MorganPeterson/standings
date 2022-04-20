@@ -1,29 +1,20 @@
-import { useEffect } from 'react'
 import { StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import League from './League'
-import * as SQLite from 'expo-sqlite'
-import {
-    openDatabase,
-    createStandingsTable
-} from './database'
+import { AL, NL } from './constants'
 
 export default function App() {
-    useEffect(() => {
-        openDatabase().then((db: SQLite.WebSQLDatabase) => {
-            createStandingsTable(db)
-        })
-    }, [])
-
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <League
-                    leagueId={103}
-                    leagueName='American League'
+                    key={ AL.id }
+                    leagueId={ AL.id }
+                    leagueName={ AL.title }
                 />
                 <League
-                    leagueId={104}
-                    leagueName='National League'
+                    key={ NL.id }
+                    leagueId={ NL.id }
+                    leagueName={ NL.title }
                 />
             </ScrollView>
         </SafeAreaView>

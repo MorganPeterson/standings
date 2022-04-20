@@ -60,5 +60,11 @@ interface DivTableProps {
     division: Get_Game_Data
 }
 
+interface LeagueDetails {
+    id: number
+    title: string
+    color: string
+}
+
 declare function openDatabase(): SQLite.WebSQLDatabase
 

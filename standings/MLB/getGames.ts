@@ -1,3 +1,4 @@
+import { mlbApi, apiArgs } from './constants'
 import divisionName from './divisionName'
 
 function divisionRecords(division: Record_Type): Parsed_Team[] {
@@ -15,7 +16,7 @@ function divisionRecords(division: Record_Type): Parsed_Team[] {
 async function getGames(leagueId: number): Promise<Get_Game_Type> {
     let data = []
     try {
-        const response = await fetch(`https://statsapi.mlb.com/api/v1/standings?leagueId=${leagueId}`, {
+        const response = await fetch(`${mlbApi}${apiArgs}${leagueId}`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -31,7 +32,8 @@ async function getGames(leagueId: number): Promise<Get_Game_Type> {
         }))
     } catch (error) {
         console.error(error)
-        return {loading: false, id: leagueId, lastUpdated: '', data}
+        const updateTime = new Date().toString()
+        return {loading: false, id: leagueId, lastUpdated: updateTime, data}
     } finally {
         return {
             loading: false,

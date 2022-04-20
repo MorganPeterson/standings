@@ -5,13 +5,15 @@ import {
     TableWrapper,
     Row
 } from 'react-native-table-component'
+import { colHeaderText, colFlexSize, teamRowData } from './constants'
 
 export default function DivisionTable({ division }: DivTableProps) {
     return (
-        <Table style={styles.divisionTable}>
+        <Table key={division.divId} style={styles.divisionTable}>
             <Row
-                data={[division.division, 'win', 'loss', 'pct', 'gb']}
-                flexArr={[3, 1, 1, 1, 1]}
+                key={`${division.divId}-header`}
+                data={colHeaderText(division.division)}
+                flexArr={colFlexSize()}
                 textStyle={styles.text}
                 style={styles.headerRow}
             />
@@ -19,14 +21,8 @@ export default function DivisionTable({ division }: DivTableProps) {
                 {division.records.map((team: Parsed_Team) => (
                     <Row
                         key={team.id}
-                        data={[
-                            team.name,
-                            team.wins,
-                            team.losses,
-                            team.pct,
-                            team.gb
-                        ]}
-                        flexArr={[3, 1, 1, 1, 1]}
+                        data={teamRowData(team)}
+                        flexArr={colFlexSize()}
                         textStyle={styles.text}
                     />))}
             </TableWrapper>
