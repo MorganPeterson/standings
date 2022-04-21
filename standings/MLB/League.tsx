@@ -9,7 +9,7 @@ export default function League({ leagueName, leagueId }: LeagueProps) {
     const [data, setData] = useState<Get_Game_Data[]>([])
 
     useEffect(() => {
-        getGames(leagueId).then((d) => {
+        getGames(leagueId).then((d: Get_Game_Type) => {
             setData(d.data)
             setLoading(d.loading)
         })

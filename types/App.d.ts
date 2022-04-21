@@ -32,6 +32,11 @@ interface LeagueProps {
     leagueName: string
 }
 
+interface ConferenceProps {
+    conferenceId: number
+    conferenceName: string
+}
+
 interface Parsed_Team {
     id: number
     name: string,

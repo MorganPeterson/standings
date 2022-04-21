@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MLBStandings from './standings/MLB/MLBStandings'
+import NHLStandings from './standings/NHL/NHLStandings'
 import HomeScreen from './standings/HomeScreen'
 
 const Stack = createNativeStackNavigator()
@@ -18,6 +19,11 @@ export default function App() {
                     name="MLBStandings"
                     component={MLBStandings}
                     options={{ title: 'MLB Standings'}}
+                />
+                <Stack.Screen
+                    name="NHLStandings"
+                    component={NHLStandings}
+                    options={{ title: 'NHL Standings'}}
                 />
             </Stack.Navigator>
         </NavigationContainer>

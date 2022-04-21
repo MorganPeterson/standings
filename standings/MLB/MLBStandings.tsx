@@ -2,7 +2,7 @@ import { StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import League from './League'
 import { AL, NL } from './constants'
 
-export default function App() {
+export default function MLBStandings() {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
