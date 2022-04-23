@@ -5,13 +5,13 @@ export default function HomeScreen({ navigation }: any) {
         <SafeAreaView style={styles.view}>
             <Pressable
                 style={styles.button}
-                onPress={() => navigation.navigate('MLBHome')}>
-                <Text style={styles.text}>Major League Baseball</Text>
+                onPress={() => navigation.navigate('NHLStandings')}>
+                <Text style={styles.text}>NHL Standings</Text>
             </Pressable>
             <Pressable
                 style={styles.button}
-                onPress={() => navigation.navigate('NHLHome')}>
-                <Text style={styles.text}>National Hockey League</Text>
+                onPress={() => navigation.navigate('NHLSchedule')}>
+                <Text style={styles.text}>NHL Schedule</Text>
             </Pressable>
         </SafeAreaView>
     )
@@ -34,3 +34,4 @@ const styles = StyleSheet.create({
         fontSize: 23
     }
 })
+

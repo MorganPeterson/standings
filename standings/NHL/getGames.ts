@@ -1,9 +1,9 @@
-import { nhlApi } from './constants'
+import { standingsApi } from './constants'
 
 async function getGames(): Promise<any> {
     let x: any = {}
     try {
-        const response = await fetch(nhlApi, {
+        const response = await fetch(standingsApi, {
         method: 'GET',
         headers: {
             Accept: 'application/json',

@@ -71,5 +71,3 @@ interface LeagueDetails {
     color: string
 }
 
-declare function openDatabase(): SQLite.WebSQLDatabase
-

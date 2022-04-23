@@ -1,4 +1,5 @@
-const nhlApi = 'https://statsapi.web.nhl.com/api/v1/standings'
+const standingsApi = 'https://statsapi.web.nhl.com/api/v1/standings'
+const scheduleApi = 'https://statsapi.web.nhl.com/api/v1/schedule'
 
 const headerColor = (name: string): object => ({
     color: 'white',
@@ -22,4 +23,4 @@ const teamRowData = (team: Team_Records): Array<string|number> => ([
     team.points
 ])
 
-export { nhlApi, headerColor, colHeaderText, colFlexSize, teamRowData }
+export { standingsApi, scheduleApi, headerColor, colHeaderText, colFlexSize, teamRowData }
