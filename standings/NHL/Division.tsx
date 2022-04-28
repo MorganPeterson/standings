@@ -23,6 +23,7 @@ export default function Division({ name, division }: any) {
                         key={team.team.id}
                         data={teamRowData(team)}
                         flexArr={colFlexSize()}
+                        style={styles.teamRow}
                         textStyle={styles.text}
                     />))}
             </TableWrapper>
@@ -33,13 +34,22 @@ export default function Division({ name, division }: any) {
 const styles = StyleSheet.create({
     divisionTable: {
         width: '100%',
-        marginBottom: 20
+        textAlign: 'left',
     },
     text: {
-        margin: 1
+        backgroundColor: '#3b3c3d',
+        letterSpacing: .1,
+        fontSize: 10,
+        textTransform: 'uppercase',
+        padding: 12
     },
     headerRow: {
-        borderBottomWidth: 1
+        backgroundColor: '#dbdcdd'
+    },
+    teamRow: {
+        borderStyle: 'solid',
+        borderBottomColor: 'gray',
+        borderBottomWidth: .2
     }
 })
 

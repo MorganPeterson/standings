@@ -15,7 +15,7 @@ interface OngoingGame_Props {
 }
 
 const colHeaderText = (): Array<string> => {
-    const r: Array<string> = ['Team', 'R', 'H', 'E']
+    const r: Array<string> = ['', 'R', 'H', 'E']
     return r
 }
 
@@ -53,49 +53,77 @@ export default function OngoingGame({ gamePk, homeTeam, awayTeam, status }: Ongo
 
     return (
         <View style={styles.view}>
+            { status === 'Final'
+                ? <Text style={styles.inning} >{`${status} - ${data?.currentInning || '1'} innings`}</Text>
+                : <Text style={styles.inning}>{`${data?.inningState || 'Top'} of the ${data?.currentInningOrdinal || '1st'}`}</Text>
+            }
             <Table style={styles.divisionTable}>
                 <Row
                     data={colHeaderText()}
                     flexArr={colFlexSize()}
-                    textStyle={styles.text}
+                    textStyle={styles.headerText}
                     style={styles.headerRow}
                 />
                 <TableWrapper>
                     <Row
                         data={generateLinescore(data?.teams, awayTeam, 'away')}
                         flexArr={colFlexSize()}
-                        textStyle={styles.text}
-                        style={styles.headerRow}
+                        textStyle={styles.rowText}
+                        style={styles.row}
                     />
                     <Row
                         data={generateLinescore(data?.teams, homeTeam, 'home')}
                         flexArr={colFlexSize()}
-                        textStyle={styles.text}
-                        style={styles.headerRow}
+                        textStyle={styles.rowText}
+                        style={styles.row}
                     />
                 </TableWrapper>
             </Table>
-            { status === 'Final'
-                ? <Text>{`${status} - ${data?.currentInning || '1'} innings`}</Text>
-                : <Text>{`${data?.inningState || 'Top'} of the ${data?.currentInningOrdinal || '1st'}`}</Text>
-            }
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     view: {
+        backgroundColor: 'white',
         width: '100%',
-        marginBottom: 20
+        marginTop: 10,
+    },
+    inning: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        padding: 6,
+        borderStyle: 'solid',
+        borderBottomColor: 'gray',
+        borderBottomWidth: .2
     },
     divisionTable: {
         width: '100%',
+        margin: 5
     },
-    text: {
-        margin: 1
+    rowText: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        padding: 6,
+        letterSpacing: .1,
+        borderStyle: 'solid',
+        borderBottomColor: 'gray',
+        borderBottomWidth: .2
+    },
+    headerText: {
+        padding: 6,
+        letterSpacing: .1,
+        borderStyle: 'solid',
+        borderBottomColor: 'gray',
+        borderBottomWidth: .2,
+        fontSize: 14,
+        color: 'gray'
+    },
+    row: {
+        padding: 2
     },
     headerRow: {
-        borderBottomWidth: 1
+        padding: 2
     }
 })
 

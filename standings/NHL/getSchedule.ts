@@ -1,8 +1,8 @@
 import { scheduleApi } from './constants'
 
-async function getSchedule(): Promise<NHL_Schedule> {
+async function getSchedule(today: string): Promise<NHL_Schedule> {
     try {
-        const response = await fetch(`${scheduleApi}?expand=schedule.linescore`, {
+        const response = await fetch(`${scheduleApi}${today}&endDate=${today}`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',

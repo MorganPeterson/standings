@@ -1,6 +1,6 @@
 const mlbApi = 'https://statsapi.mlb.com/api/v1/standings'
 const apiArgs = '?leagueId='
-const scheduleApi = 'https://statsapi.mlb.com/api/v1/schedule/games?sportId=1'
+const scheduleApi = 'https://statsapi.mlb.com/api/v1/schedule/games?sportId=1&date='
 const linescoreApi = 'https://statsapi.mlb.com/api/v1/game'
 const linescoreApiArg = 'linescore'
 
@@ -22,7 +22,7 @@ const headerColor = (id: number): object => ({
 })
 
 const colHeaderText = (division: string): string[] => ([
-    division, 'win', 'loss', 'pct', 'gb'
+    division, 'w', 'l', 'pct', 'gb'
 ])
 
 const colFlexSize = (): number[] => ([

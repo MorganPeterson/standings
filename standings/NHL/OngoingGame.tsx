@@ -10,13 +10,17 @@ interface OngoingGame_Props {
     game: NHL_Schedule_Games
 }
 
-const colHeaderText = (periods: NHL_Linescore_Period[]): string[] => {
-    const returnArray: Array<string> = ['Team', '1', '2', '3']
+const colHeaderText = (linescore: NHL_Schedule_Linescore): string[] => {
+    const periods: NHL_Linescore_Period[] = linescore.periods
+    const returnArray: Array<string> = ['', '1', '2', '3']
     periods.forEach(period => {
-        console.log(period.ordinalNum)
-        if (period.ordinalNum === 'OT' || period.ordinalNum === 'SO')
+        if (period.ordinalNum === 'OT')
             returnArray.push(period.ordinalNum)
     })
+
+    if (linescore.hasShootout)
+        returnArray.push('SO')
+
     returnArray.push('T')
     return returnArray
 }
@@ -36,6 +40,8 @@ const generateLinescore = (game: NHL_Schedule_Games, who: string): Array<string|
         for (let i = resultArray.length; i < 4; i++) {
             resultArray.push(0)
         }
+        if (game.linescore.hasShootout)
+            resultArray.push(game.linescore.shootoutInfo.away.scores)
         resultArray.push(game.teams.away.score)
     }
     if (who === 'home') {
@@ -44,6 +50,8 @@ const generateLinescore = (game: NHL_Schedule_Games, who: string): Array<string|
         for (let i = resultArray.length; i < 4; i++) {
             resultArray.push(0)
         }
+        if (game.linescore.hasShootout)
+            resultArray.push(game.linescore.shootoutInfo.home.scores)
         resultArray.push(game.teams.home.score)
     }
 
@@ -53,50 +61,72 @@ const generateLinescore = (game: NHL_Schedule_Games, who: string): Array<string|
 export default function OngoingGame({ game }: OngoingGame_Props) {
     return (
         <View style={styles.view}>
+            { game.linescore.currentPeriodTimeRemaining === 'Final'
+                ? <Text style={styles.period}>{`${game.linescore.currentPeriodTimeRemaining}`}</Text>
+                : <Text style={styles.period}>{`${game.linescore.currentPeriodTimeRemaining} ${game.linescore.currentPeriodOrdinal}`}</Text>
+            }
             <Table style={styles.divisionTable}>
                 <Row
-                    data={colHeaderText(game.linescore.periods)}
+                    data={colHeaderText(game.linescore)}
                     flexArr={colFlexSize(game.linescore.periods.length)}
-                    textStyle={styles.text}
+                    textStyle={styles.headerText}
                     style={styles.headerRow}
                 />
                 <TableWrapper>
                     <Row
                         data={generateLinescore(game, 'away')}
                         flexArr={colFlexSize(game.linescore.periods.length)}
-                        textStyle={styles.text}
+                        textStyle={styles.rowText}
                         style={styles.headerRow}
                     />
                     <Row
                         data={generateLinescore(game, 'home')}
                         flexArr={colFlexSize(game.linescore.periods.length)}
-                        textStyle={styles.text}
+                        textStyle={styles.rowText}
                         style={styles.headerRow}
                     />
                 </TableWrapper>
             </Table>
-            { game.linescore.currentPeriodTimeRemaining === 'Final'
-                ? <Text>{`${game.linescore.currentPeriodTimeRemaining}`}</Text>
-                : <Text>{`${game.linescore.currentPeriodTimeRemaining} ${game.linescore.currentPeriodOrdinal}`}</Text>
-            }
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     view: {
+        backgroundColor: 'white',
         width: '100%',
-        marginBottom: 20
+        marginTop: 10,
+    },
+    period: {
+        fontWeight: 'bold',
+        fontSize: 14,
+        padding: 6,
+        borderStyle: 'solid',
+        borderBottomColor: 'gray',
+        borderBottomWidth: .2
     },
     divisionTable: {
         width: '100%',
+        margin: 5
     },
-    text: {
-        margin: 1
+    rowText: {
+        fontWeight: 'bold',
+        fontSize: 12,
+        padding: 6,
+        letterSpacing: .1,
+    },
+    headerText: {
+        padding: 6,
+        letterSpacing: .1,
+        borderStyle: 'solid',
+        fontSize: 14,
+        color: 'gray'
+    },
+    row: {
+        padding: 2
     },
     headerRow: {
-        borderBottomWidth: 1
+        padding: 2
     }
 })
-
 

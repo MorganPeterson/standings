@@ -1,5 +1,5 @@
 const standingsApi = 'https://statsapi.web.nhl.com/api/v1/standings'
-const scheduleApi = 'https://statsapi.web.nhl.com/api/v1/schedule'
+const scheduleApi = 'https://statsapi.web.nhl.com/api/v1/schedule?expand=schedule.linescore&startDate='
 
 const headerColor = (name: string): object => ({
     color: 'white',
@@ -7,11 +7,11 @@ const headerColor = (name: string): object => ({
 })
 
 const colHeaderText = (division: string): string[] => ([
-    division, 'gp', 'win', 'loss', 'ot', 'pnts'
+    division, 'gp', 'w', 'l', 'ot', 'p'
 ])
 
 const colFlexSize = (): number[] => ([
-    4, 1, 1, 1, 1, 1
+    4, 1, 1, 1, 1, 1.1
 ])
 
 const teamRowData = (team: Team_Records): Array<string|number> => ([

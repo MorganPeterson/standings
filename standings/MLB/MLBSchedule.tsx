@@ -15,7 +15,9 @@ export default function MLBSchedule() {
     })
 
     useEffect(() => {
-        getSchedule().then((d: any) => {
+        const today = new Date()
+        const t: string =  `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
+        getSchedule(t).then((d: any) => {
             setData(d)
             setLoading(false)
         })
