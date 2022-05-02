@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import UpcomingGame from './UpcomingGame'
+import UpcomingGame from '../UpcomingGame'
 import OngoingGame from './OngoingGame'
 
 interface ScheduleDay_Props {
@@ -11,7 +11,6 @@ export default function ScheduleDay({ today }: ScheduleDay_Props) {
     const [upcoming, setUpcoming] = useState<NHL_Schedule_Games[]>([])
     const [ongoing, setOngoing] = useState<NHL_Schedule_Games[]>([])
 
-    console.log(today)
     useEffect(() => {
         const uc = today.games.filter((g: NHL_Schedule_Games) => g.status.abstractGameState === 'Preview')
         const og = today.games.filter((g: NHL_Schedule_Games) => g.status.abstractGameState !== 'Preview')
@@ -23,8 +22,8 @@ export default function ScheduleDay({ today }: ScheduleDay_Props) {
     return (
         <View>
             <Text style={styles.dateText}>{today.date}</Text>
-            { upcoming.map((g: NHL_Schedule_Games) => <UpcomingGame game={g} />) }
-            { ongoing.map((g: NHL_Schedule_Games) => <OngoingGame game={g} />)}
+            { upcoming.map((g: NHL_Schedule_Games) => <UpcomingGame key={g.gamePk} game={g} />) }
+            { ongoing.map((g: NHL_Schedule_Games) => <OngoingGame key={g.gamePk} game={g} />)}
         </View>
     )
 }

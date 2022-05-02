@@ -5,7 +5,7 @@ import {
     Row,
     TableWrapper
 } from 'react-native-table-component'
-import { getLinescore } from './getSchedule'
+import { getMLBLinescore } from '../getMLBLinescore'
 
 interface OngoingGame_Props {
     gamePk: number
@@ -45,7 +45,7 @@ const generateLinescore = (score: MLB_Linescore_Teams | undefined, team: string,
 export default function OngoingGame({ gamePk, homeTeam, awayTeam, status }: OngoingGame_Props) {
     const [data, setData] = useState<MLB_Linescore>()
     useEffect(() => {
-        getLinescore(gamePk).then(game => setData(game))
+        getMLBLinescore(gamePk).then(game => setData(game))
         return () => {
             setData(undefined)
         }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import UpcomingGame from './UpcomingGame'
+import UpcomingGame from '../UpcomingGame'
 import OngoingGame from './OngoingGame'
 
 interface ScheduleDay_Props {

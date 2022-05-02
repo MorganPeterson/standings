@@ -18,15 +18,6 @@ type Team_Type = {
     divisionGamesBack: string
 }
 
-type Record_Type = {
-    standingType: string
-    lastUpdated: string
-    league: League_Type
-    division: League_Type
-    sport: League_Type
-    teamRecords: Team_Type[]
-}
-
 interface LeagueProps {
     leagueId: number,
     leagueName: string
@@ -35,34 +26,6 @@ interface LeagueProps {
 interface ConferenceProps {
     conferenceId: number
     conferenceName: string
-}
-
-interface Parsed_Team {
-    id: number
-    name: string,
-    wins: number,
-    losses: number,
-    pct: string,
-    gb: string
-}
-
-interface Get_Game_Data {
-    lastUpdated: string
-    division: string
-    divId: number
-    leagueId: number
-    records: Parsed_Team[]
-}
-
-type Get_Game_Type = {
-    loading: boolean
-    id: number
-    lastUpdated: string
-    data: Get_Game_Data[]
-}
-
-interface DivTableProps {
-    division: Get_Game_Data
 }
 
 interface LeagueDetails {

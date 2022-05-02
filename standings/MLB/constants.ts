@@ -1,9 +1,3 @@
-const mlbApi = 'https://statsapi.mlb.com/api/v1/standings'
-const apiArgs = '?leagueId='
-const scheduleApi = 'https://statsapi.mlb.com/api/v1/schedule/games?sportId=1&date='
-const linescoreApi = 'https://statsapi.mlb.com/api/v1/game'
-const linescoreApiArg = 'linescore'
-
 const AL: LeagueDetails = {
     id: 103,
     title: 'American League',
@@ -44,9 +38,4 @@ export {
     colHeaderText,
     colFlexSize,
     teamRowData,
-    mlbApi,
-    apiArgs,
-    scheduleApi,
-    linescoreApi,
-    linescoreApiArg
 }

@@ -7,7 +7,7 @@ import {
 } from 'react-native-table-component'
 import { colHeaderText, colFlexSize, teamRowData } from './constants'
 
-export default function DivisionTable({ division }: DivTableProps) {
+export default function Division({ division }: DivTableProps) {
     return (
         <Table key={division.divId} style={styles.divisionTable}>
             <Row

@@ -7,24 +7,26 @@ import {
 } from 'react-native-table-component'
 import { colHeaderText, colFlexSize, teamRowData } from './constants'
 
-export default function Division({ name, division }: any) {
+
+// export default function Division({ name, division }: any) {
+export default function Division({ name, sport, division }: Division_Table_Props_Type) {
     return (
-        <Table key={`${name}-division`} style={styles.divisionTable}>
+        <Table key={division.divId} style={styles.divisionTable}>
             <Row
                 key={`${name}-header-row`}
-                data={colHeaderText(name)}
-                flexArr={colFlexSize()}
+                data={colHeaderText(name, sport)}
+                flexArr={colFlexSize(sport)}
                 textStyle={styles.text}
                 style={styles.headerRow}
             />
             <TableWrapper>
-                {division.map((team: Team_Records) => (
+                {division.map((team: any) => (
                     <Row
-                        key={team.team.id}
-                        data={teamRowData(team)}
-                        flexArr={colFlexSize()}
-                        style={styles.teamRow}
+                        key={team.id}
+                        data={teamRowData(team, sport)}
+                        flexArr={colFlexSize(sport)}
                         textStyle={styles.text}
+                        style={styles.teamRow}
                     />))}
             </TableWrapper>
         </Table>
@@ -37,6 +39,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
     },
     text: {
+        backgroundColor: '#3b3c3d',
         letterSpacing: .1,
         fontSize: 10,
         textTransform: 'uppercase',

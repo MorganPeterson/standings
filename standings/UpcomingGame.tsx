@@ -4,24 +4,18 @@ import {
     Row,
     TableWrapper
 } from 'react-native-table-component'
+import GameTime from './gameTime'
 
 interface ScheduleGame_Props {
-    game: NHL_Schedule_Games
-}
-
-function formatHHMM(date: Date): string {
-    function z(n: number){return (n < 10 ? '0' : '') + n}
-    var h = date.getHours()
-    return `${h % 12}:${z(date.getMinutes())} ${(h < 12 ? 'AM' : 'PM')}`
+    game: MLB_Game | NHL_Schedule_Games
 }
 
 export default function UpcomingGame({ game }: ScheduleGame_Props) {
-    const timeRaw = new Date(game.gameDate)
-    const t: string = formatHHMM(timeRaw)
+    const t: string = GameTime(game.gameDate)
 
     return (
         <View style={styles.view}>
-            <Text style={styles.period}>{t}</Text>
+            <Text style={styles.inning}>{t}</Text>
             <Table style={styles.divisionTable}>
                 <TableWrapper>
                     <Row
@@ -46,7 +40,7 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 10,
     },
-    period: {
+    inning: {
         fontWeight: 'bold',
         fontSize: 16,
         padding: 6,
@@ -71,4 +65,5 @@ const styles = StyleSheet.create({
         padding: 2
     }
 })
+
 

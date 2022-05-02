@@ -25,37 +25,6 @@ interface Streak {
     streakCode: string
 }
 
-interface Team_Records {
-    team: ID_Object
-    leagueRecord: League_Record
-    regulationWins: number
-    goalsAgainst: number
-    goalsScored: number
-    points: number
-    divisionRank: string
-    divisionL10Rank: string
-    divisionRoadRank: string
-    divisionHomeRank: string
-    conferenceRank: string
-    conferenceL10Rank: string
-    conferenceRoadRank: string
-    conferenceHomeRank: string
-    leagueRank: string
-    leagueL10Rank: string
-    leagueRoadRank: string
-    leagueHomeRank: string
-    wildCardRank: string
-    row: number
-    gamesPlayed: number
-    streak: Streak
-    clinchIndicator: string
-    pointsPercentage: number
-    ppDivisionRank: string
-    ppConferenceRank: string
-    ppLeagueRank: string
-    lastUpdated: string
-}
-
 interface Standings {
     standingsType: string
     league: ID_Object

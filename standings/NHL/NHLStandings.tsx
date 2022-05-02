@@ -1,14 +1,14 @@
 import {useEffect, useState} from 'react'
-import { ActivityIndicator, StyleSheet, SafeAreaView, ScrollView, Text } from 'react-native'
+import { ActivityIndicator, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import Conference from './Conference'
-import { getGames } from './getGames'
+import { getNHLGames } from '../getGames'
 
 export default function NHLStandings() {
     const [isLoading, setLoading] = useState<boolean>(true)
     const [data, setData] = useState<any>({})
 
     useEffect(() => {
-        getGames().then((d: any) => {
+        getNHLGames().then((d: any) => {
             setData(d)
             setLoading(false)
         })

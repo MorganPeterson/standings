@@ -1,15 +1,15 @@
 import {useEffect, useState} from 'react'
 import { ActivityIndicator, View, Text } from 'react-native'
 import { headerColor } from './constants'
-import DivisionTable from './DivisionTable'
-import getGames from './getGames'
+import Division from './Division'
+import { getMLBGames } from '../getGames'
 
 export default function League({ leagueName, leagueId }: LeagueProps) {
     const [isLoading, setLoading] = useState<boolean>(true)
-    const [data, setData] = useState<Get_Game_Data[]>([])
+    const [data, setData] = useState<MLB_Record_Parse_Type[]>([])
 
     useEffect(() => {
-        getGames(leagueId).then((d: Get_Game_Type) => {
+        getMLBGames(leagueId).then((d: Get_Game_Type) => {
             setData(d.data)
             setLoading(d.loading)
         })
@@ -22,12 +22,12 @@ export default function League({ leagueName, leagueId }: LeagueProps) {
             </Text>
             {isLoading
                 ? <ActivityIndicator size="large" />
-                : data.map((division: Get_Game_Data) =>
-                    <DivisionTable
-                        key={division.divId}
-                        division={division}
-                    />)
-            }
+                : data.map((division: MLB_Record_Parse_Type) =>
+                <Division
+                    key={division.divId}
+                    name={division.division}
+                    sport='mlb'
+                    division={division}/>)}
         </View>
     )
 }

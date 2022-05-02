@@ -1,21 +1,19 @@
+import React from 'react'
 import { SafeAreaView, Pressable, Text, StyleSheet } from 'react-native'
 
-export default function HomeScreen({ navigation }: any) {
+export default React.memo(function HomeScreen({ navigation, navDetails }: any) {
     return (
         <SafeAreaView style={styles.view}>
-            <Pressable
-                style={styles.button}
-                onPress={() => navigation.navigate('MLBHome')}>
-                <Text style={styles.text}>Major League Baseball</Text>
-            </Pressable>
-            <Pressable
-                style={styles.button}
-                onPress={() => navigation.navigate('NHLHome')}>
-                <Text style={styles.text}>National Hockey League</Text>
-            </Pressable>
+            { navDetails.map((detail: any) =>
+                <Pressable
+                    key={detail.key}
+                    style={styles.button}
+                    onPress={() => navigation.navigate(detail.component)}>
+                    <Text style={styles.text}>{detail.title}</Text>
+                </Pressable>)}
         </SafeAreaView>
     )
-}
+})
 
 const styles = StyleSheet.create({
     view: {

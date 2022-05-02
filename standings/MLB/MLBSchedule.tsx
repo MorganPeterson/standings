@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react'
 import { ActivityIndicator, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import ScheduleDay from './ScheduleDay'
-import { getSchedule } from './getSchedule'
+import { getMLBSchedule } from '../getSchedule'
+import GetGameDate from '../gameDate'
 
 export default function MLBSchedule() {
     const [isLoading, setLoading] = useState<boolean>(true)
@@ -15,9 +16,8 @@ export default function MLBSchedule() {
     })
 
     useEffect(() => {
-        const today = new Date()
-        const t: string =  `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
-        getSchedule(t).then((d: any) => {
+        const t: string = GetGameDate()
+        getMLBSchedule(t).then((d: any) => {
             setData(d)
             setLoading(false)
         })
