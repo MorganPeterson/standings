@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import { ActivityIndicator, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
-import Conference from './Conference'
+import Conference from '../League'
 import { getNHLGames } from '../getGames'
 
 export default function NHLStandings() {
@@ -20,7 +20,7 @@ export default function NHLStandings() {
                 {isLoading
                     ? <ActivityIndicator />
                     : Object.keys(data).map((key: string) =>
-                        <Conference key={key} name={key} conference={data[key]} />)}
+                        <Conference key={key} name={key} league={data[key]} sport='nhl' />)}
             </ScrollView>
         </SafeAreaView>
     )

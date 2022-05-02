@@ -4,58 +4,38 @@ import {
     nhlStandingsEndpoint
 } from './constants'
 
-const div: string = ' Division'
-
-function divisionRecords(division: MLB_Record_Type): MLB_Team_Parse_Type[] {
-    return division.teamRecords.map((team: MLB_Team_Records_Type): MLB_Team_Parse_Type => (
-        {
-            id: team.team.id,
-            name: team.team.name,
-            wins: team.wins,
-            losses: team.losses,
-            pct: team.winningPercentage,
-            gb: team.divisionGamesBack
-        }))
-}
-
 function divisionName(id: number): string {
     switch (id) {
-        case 200: return `Western ${div}`
-        case 201: return `Eastern ${div}`
-        case 202: return `Central ${div}`
-        case 203: return `Western ${div}`
-        case 204: return `Eastern ${div}`
-        case 205: return `Central ${div}`
-        default: return div
+        case 200: return `western`
+        case 201: return `eastern`
+        case 202: return `central`
+        case 203: return `western`
+        case 204: return `eastern`
+        case 205: return `central`
+        default: return 'unknown'
     }
 }
 
-async function getMLBGames(leagueId: number): Promise<MLB_Get_Game_Type> {
-    let data: MLB_Record_Parse_Type[] = []
+async function getMLBLeague(leagueId: number): Promise<any> {
+    let x: any = {}
     try {
         const response = await fetch(`${mlbStandingsEndpoint}${leagueId}`, fetchGetHeaders)
         const json: MLB_Standings_Type = await response.json()
-        data = json?.records.map((division: MLB_Record_Type): MLB_Record_Parse_Type => ({
-            lastUpdated: division.lastUpdated,
-            division: divisionName(division.division.id),
-            divId: division.division.id,
-            leagueId: division.league.id,
-            records: divisionRecords(division)
-        }))
+        json?.records.forEach((record: MLB_Record_Type) => {
+            const dn: string = divisionName(record.division.id)
+            x[dn] = record.teamRecords
+        })
+        return x
     } catch (error) {
-        console.error(error)
-        const updateTime = new Date().toString()
-        return {loading: false, id: leagueId, lastUpdated: updateTime, data}
-    } finally {
-        return {
-            loading: false,
-            id: leagueId,
-            lastUpdated: data[0].lastUpdated,
-            data
-        }
+        throw new Error(error)
     }
 }
 
+async function getMLBGames(): Promise<any> {
+    const american = await getMLBLeague(103)
+    const national = await getMLBLeague(104)
+    return { american, national }
+}
 
 async function getNHLGames(): Promise<any> {
     let x: any = {}

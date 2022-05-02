@@ -39,6 +39,18 @@ const fetchGetHeaders: object = {
     }
 }
 
+const AL: LeagueDetails = {
+    id: 103,
+    title: 'American League',
+    color: 'red'
+}
+
+const NL: LeagueDetails = {
+    id: 104,
+    title: 'National League',
+    color: 'blue'
+}
+
 const statsApi = 'https://statsapi.'
 const mlbApi = 'mlb.com/api/v1'
 
@@ -63,9 +75,19 @@ const colFlexSize = (sport: string): number[] => {
         : [4, 1, 1, 1, 1, 1.1]
 }
 
-const teamRowData = (team: Parsed_Team | Team_Records, sport: string): Array<string|number> => {
+const headerColor = (id: string, sport: string): object => {
     return sport === 'mlb'
-        ? [team.name, team.wins, team.losses, team.pct, team.gb]
+        ? {
+            color: 'white',
+            backgroundColor: id === 'american' ? AL.color : NL.color}
+        : {
+            color: 'white',
+            backgroundColor: id === 'Eastern' ? 'red' : 'blue'}
+}
+
+const teamRowData = (team:any, sport: string): Array<string|number> => {
+    return sport === 'mlb'
+        ? [team.team.name, team.wins, team.losses, team.winningPercentage, team.gamesBack]
         : [team.team.name, team.gamesPlayed, team.leagueRecord.wins, team.leagueRecord.losses, team.leagueRecord.ot, team.points]
 }
 
@@ -81,5 +103,6 @@ export {
     nhlScheduleEndpoint,
     colHeaderText,
     colFlexSize,
-    teamRowData
+    teamRowData,
+    headerColor
 }

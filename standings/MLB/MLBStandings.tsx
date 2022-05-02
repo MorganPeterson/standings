@@ -1,21 +1,26 @@
-import { StyleSheet, SafeAreaView, ScrollView } from 'react-native'
-import League from './League'
-import { AL, NL } from './constants'
+import { useEffect, useState} from 'react'
+import { StyleSheet, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native'
+import League from '../League'
+import { getMLBGames } from '../getGames'
 
 export default function MLBStandings() {
+    const [isLoading, setLoading] = useState<boolean>(true)
+    const [data, setData] = useState<any>({})
+
+    useEffect(() => {
+        getMLBGames().then((d: any) => {
+            setData(d)
+            setLoading(false)
+        })
+    }, [isLoading])
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
-                <League
-                    key={ AL.id }
-                    leagueId={ AL.id }
-                    leagueName={ AL.title }
-                />
-                <League
-                    key={ NL.id }
-                    leagueId={ NL.id }
-                    leagueName={ NL.title }
-                />
+                {isLoading
+                    ? <ActivityIndicator />
+                    : Object.keys(data).map((key: string) =>
+                        <League key={key} name={key} league={data[key]} sport='mlb' />)}
             </ScrollView>
         </SafeAreaView>
     )
