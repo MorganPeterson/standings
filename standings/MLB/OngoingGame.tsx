@@ -5,7 +5,7 @@ import {
     Row,
     TableWrapper
 } from 'react-native-table-component'
-import { getMLBLinescore } from '../getMLBLinescore'
+import GetMLBLinescore from '../getMLBLinescore'
 
 interface OngoingGame_Props {
     gamePk: number
@@ -24,7 +24,7 @@ const colFlexSize = (): number[] => {
     return r
 }
 
-const generateLinescore = (score: MLB_Linescore_Teams | undefined, team: string, who: string): Array<string|number> => {
+const generateLinescore = (score: MLB_Ongoing_Teams | undefined, team: string, who: string): Array<string|number> => {
     const resultArray: Array<string|number> = [team]
 
     if (score === undefined)
@@ -43,9 +43,9 @@ const generateLinescore = (score: MLB_Linescore_Teams | undefined, team: string,
 }
 
 export default function OngoingGame({ gamePk, homeTeam, awayTeam, status }: OngoingGame_Props) {
-    const [data, setData] = useState<MLB_Linescore>()
+    const [data, setData] = useState<MLB_Ongoing_Game>()
     useEffect(() => {
-        getMLBLinescore(gamePk).then(game => setData(game))
+        GetMLBLinescore(gamePk).then((game: MLB_Ongoing_Game) => setData(game))
         return () => {
             setData(undefined)
         }
@@ -54,8 +54,12 @@ export default function OngoingGame({ gamePk, homeTeam, awayTeam, status }: Ongo
     return (
         <View style={styles.view}>
             { status === 'Final'
-                ? <Text style={styles.inning} >{`${status} - ${data?.currentInning || '1'} innings`}</Text>
-                : <Text style={styles.inning}>{`${data?.inningState || 'Top'} of the ${data?.currentInningOrdinal || '1st'}`}</Text>
+                ? <Text style={styles.inning} >
+                    {`${status} - ${data?.currentInning || '1'} innings`}
+                </Text>
+                : <Text style={styles.inning}>
+                    {`${data?.inningState || 'Top'} of the ${data?.currentInningOrdinal || '1st'}`}
+                </Text>
             }
             <Table style={styles.divisionTable}>
                 <Row

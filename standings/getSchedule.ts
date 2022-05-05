@@ -1,23 +1,11 @@
 import { fetchGetHeaders, mlbScheduleEndpoint, nhlScheduleEndpoint } from './constants'
+import ApiFetch from '../apiFetch'
 
-async function getMLBSchedule(today: string): Promise<MLB_Schedule> {
-    try {
-        const response = await fetch(`${mlbScheduleEndpoint}${today}`, fetchGetHeaders)
-        const json: MLB_Schedule = await response.json()
-        return json
-    } catch (error) {
-        throw new Error(error.message)
-    }
+async function getSchedule<T>(today: string, sport: string): Promise<T> {
+    if (sport === 'mlb')
+        return ApiFetch<T>(`${mlbScheduleEndpoint}${today}`, fetchGetHeaders)
+    else
+        return ApiFetch<T>(`${nhlScheduleEndpoint}${today}&endDate=${today}`, fetchGetHeaders)
 }
 
-async function getNHLSchedule(today: string): Promise<NHL_Schedule> {
-    try {
-        const response = await fetch(`${nhlScheduleEndpoint}${today}&endDate=${today}`, fetchGetHeaders)
-        const json: NHL_Schedule = await response.json()
-        return json
-    } catch (error) {
-        throw new Error(error.message)
-    }
-}
-
-export { getMLBSchedule, getNHLSchedule }
+export default getSchedule

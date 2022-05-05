@@ -1,8 +1,11 @@
 import {
     fetchGetHeaders,
     mlbStandingsEndpoint,
-    nhlStandingsEndpoint
+    nhlStandingsEndpoint,
+    AL,
+    NL
 } from './constants'
+import ApiFetch from '../apiFetch'
 
 function divisionName(id: number): string {
     switch (id) {
@@ -16,42 +19,48 @@ function divisionName(id: number): string {
     }
 }
 
-async function getMLBLeague(leagueId: number): Promise<any> {
-    let x: any = {}
-    try {
-        const response = await fetch(`${mlbStandingsEndpoint}${leagueId}`, fetchGetHeaders)
-        const json: MLB_Standings_Type = await response.json()
-        json?.records.forEach((record: MLB_Record_Type) => {
-            const dn: string = divisionName(record.division.id)
+function mlbGamesParser(json: MLB_Standings_Type): Division_Type {
+    let x: Division_Type = <Division_Type>{}
+    json?.records.forEach((record: MLB_Record_Type) => {
+        const dn: string = divisionName(record.division.id)
             x[dn] = record.teamRecords
         })
         return x
-    } catch (error) {
-        throw new Error(error)
-    }
 }
 
-async function getMLBGames(): Promise<any> {
-    const american = await getMLBLeague(103)
-    const national = await getMLBLeague(104)
+function nhlGamesParser(json: NHL_Standings_Type): Get_Standings_Type {
+    let x: Get_Standings_Type = <Get_Standings_Type>{}
+    json?.records.forEach((record: NHL_Record_Type) => {
+        if (!(record.conference.name in x))
+            x[record.conference.name] = <Conference_Type>{}
+        x[record.conference.name][record.division.name] = record.teamRecords
+    })
+    return x
+}
+
+async function getMLBLeague(leagueId: number): Promise<Division_Type> {
+    return ApiFetch<MLB_Standings_Type>(`${mlbStandingsEndpoint}${leagueId}`, fetchGetHeaders)
+        .then((json: MLB_Standings_Type) => {
+            return mlbGamesParser(json)
+        }).catch(() => {
+            return <Division_Type>{}
+        })
+}
+
+async function getMLBGames(): Promise<Get_League_Type> {
+    const american = await getMLBLeague(AL.id)
+    const national = await getMLBLeague(NL.id)
     return { american, national }
 }
 
-async function getNHLGames(): Promise<any> {
-    let x: any = {}
-    try {
-        const response = await fetch(nhlStandingsEndpoint, fetchGetHeaders)
-        const json: NHL_Standings_Type = await response.json()
-        json?.records.forEach((record: NHL_Record_Type) => {
-            if (!(record.conference.name in x))
-                x[record.conference.name] = {}
-
-            x[record.conference.name][record.division.name] = record.teamRecords
+async function getNHLGames(): Promise<Get_Standings_Type> {
+    return ApiFetch<NHL_Standings_Type>(nhlStandingsEndpoint, fetchGetHeaders)
+        .then((json: NHL_Standings_Type) => {
+            return nhlGamesParser(json)
         })
-        return x
-    } catch (error) {
-        throw new Error(error.message)
-    }
+        .catch(() => {
+            return <Get_Standings_Type>{}
+        })
 }
 
 export { getMLBGames, getNHLGames }

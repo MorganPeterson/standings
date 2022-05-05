@@ -39,13 +39,13 @@ const fetchGetHeaders: object = {
     }
 }
 
-const AL: LeagueDetails = {
+const AL: League_Details = {
     id: 103,
     title: 'American League',
     color: 'red'
 }
 
-const NL: LeagueDetails = {
+const NL: League_Details = {
     id: 104,
     title: 'National League',
     color: 'blue'
@@ -85,13 +85,30 @@ const headerColor = (id: string, sport: string): object => {
             backgroundColor: id === 'Eastern' ? 'red' : 'blue'}
 }
 
-const teamRowData = (team:any, sport: string): Array<string|number> => {
+const returnMLBRowData = (team: MLB_Team_Records_Type): Array<string|number> => {
+    return [team.team.name, team.wins, team.losses, team.winningPercentage, team.gamesBack]
+}
+
+const returnNHLRowData = (team: NHL_Team_Records_Type): Array<string|number> => {
+    return [
+        team.team.name,
+        team.gamesPlayed,
+        team.leagueRecord.wins,
+        team.leagueRecord.losses,
+        team.leagueRecord.ot,
+        team.points]
+
+}
+
+function teamRowData(team: MLB_Team_Records_Type| NHL_Team_Records_Type, sport: string): Array<string|number> {
     return sport === 'mlb'
-        ? [team.team.name, team.wins, team.losses, team.winningPercentage, team.gamesBack]
-        : [team.team.name, team.gamesPlayed, team.leagueRecord.wins, team.leagueRecord.losses, team.leagueRecord.ot, team.points]
+        ? returnMLBRowData(team as MLB_Team_Records_Type)
+        : returnNHLRowData(team as NHL_Team_Records_Type)
 }
 
 export {
+    AL,
+    NL,
     homeNavDetails,
     mlbNavDetails,
     nhlNavDetails,

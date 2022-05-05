@@ -1,13 +1,9 @@
 import { fetchGetHeaders, mlbLinescoreEndpoint } from './constants'
+import ApiFetch from '../apiFetch'
 
-async function getMLBLinescore(gamePk: number): Promise<MLB_Linescore> {
-    try {
-        const response = await fetch(`${mlbLinescoreEndpoint}/${gamePk}/linescore`, fetchGetHeaders)
-        const json: MLB_Linescore = await response.json()
-        return json
-    } catch (error) {
-        throw new Error(error.message)
-    }
+async function getMLBLinescore(gamePk: number): Promise<MLB_Ongoing_Game> {
+        return ApiFetch<MLB_Ongoing_Game>(`${mlbLinescoreEndpoint}/${gamePk}/linescore`, fetchGetHeaders)
 }
 
-export { getMLBLinescore }
+export default getMLBLinescore
+

@@ -64,3 +64,10 @@ interface MLB_League_Record_Type extends League_Record_Type {
     pct: string
 }
 
+interface Division_Type {
+    [index: string]: MLB_Team_Records_Type[]
+}
+
+interface Get_League_Type {
+    [index: string]: Division_Type
+}

@@ -4,16 +4,16 @@ import UpcomingGame from '../UpcomingGame'
 import OngoingGame from './OngoingGame'
 
 interface ScheduleDay_Props {
-    today: MLB_Date
+    today: MLB_Schedule_Date
 }
 
 export default function ScheduleDay({ today }: ScheduleDay_Props) {
-    const [upcoming, setUpcoming] = useState<MLB_Game[]>([])
-    const [ongoing, setOngoing] = useState<MLB_Game[]>([])
+    const [upcoming, setUpcoming] = useState<MLB_Schedule_Game[]>([])
+    const [ongoing, setOngoing] = useState<MLB_Schedule_Game[]>([])
 
     useEffect(() => {
-        const uc = today.games.filter((g: MLB_Game) => g.status.abstractGameCode === 'P')
-        const og = today.games.filter((g: MLB_Game) => g.status.abstractGameCode !== 'P')
+        const uc = today.games.filter((g: MLB_Schedule_Game) => g.status.abstractGameCode === 'P')
+        const og = today.games.filter((g: MLB_Schedule_Game) => g.status.abstractGameCode !== 'P')
 
         setUpcoming(uc)
         setOngoing(og)
@@ -22,8 +22,8 @@ export default function ScheduleDay({ today }: ScheduleDay_Props) {
     return (
         <View>
             <Text style={styles.dateText}>{today.date}</Text>
-            { upcoming.map((g: MLB_Game) => <UpcomingGame game={g} />) }
-            { ongoing.map((g: MLB_Game) => <OngoingGame
+            { upcoming.map((g: MLB_Schedule_Game) => <UpcomingGame game={g} />) }
+            { ongoing.map((g: MLB_Schedule_Game) => <OngoingGame
                     homeTeam={g.teams.home.team.name}
                     awayTeam={g.teams.away.team.name}
                     gamePk={g.gamePk}

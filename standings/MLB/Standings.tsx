@@ -5,10 +5,10 @@ import { getMLBGames } from '../getGames'
 
 export default function MLBStandings() {
     const [isLoading, setLoading] = useState<boolean>(true)
-    const [data, setData] = useState<any>({})
+    const [data, setData] = useState<Get_League_Type>({})
 
     useEffect(() => {
-        getMLBGames().then((d: any) => {
+        getMLBGames().then((d: Get_League_Type) => {
             setData(d)
             setLoading(false)
         })

@@ -1,27 +1,14 @@
 import {useEffect, useState} from 'react'
 import { ActivityIndicator, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
-import ScheduleDay from './ScheduleDay'
-import { getNHLSchedule } from '../getSchedule'
-import GetGameDate from '../gameDate'
+import Conference from '../League'
+import { getNHLGames } from '../getGames'
 
-export default function NHLSchedule() {
+export default function NHLStandings() {
     const [isLoading, setLoading] = useState<boolean>(true)
-    const [data, setData] = useState<NHL_Schedule>({
-        copyright: '',
-        totalItems: 0,
-        totalEvents: 0,
-        totalGames: 0,
-        totalMatches: 0,
-        metaData: {
-            timeStamp: ''
-        },
-        wait: 0,
-        dates: []
-    })
+    const [data, setData] = useState<Get_Standings_Type>({} as Get_Standings_Type)
 
     useEffect(() => {
-        const t: string = GetGameDate()
-        getNHLSchedule(t).then((d: any) => {
+        getNHLGames().then((d: Get_Standings_Type) => {
             setData(d)
             setLoading(false)
         })
@@ -32,8 +19,8 @@ export default function NHLSchedule() {
             <ScrollView>
                 {isLoading
                     ? <ActivityIndicator />
-                    : data.dates.map(d =>
-                        <ScheduleDay key={d.date} today={d} />)}
+                    : Object.keys(data).map((key: string) =>
+                        <Conference key={key} name={key} league={data[key]} sport='nhl' />)}
             </ScrollView>
         </SafeAreaView>
     )

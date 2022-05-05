@@ -20,14 +20,14 @@ export default function Division({ name, sport, division }: Division_Table_Props
                 style={styles.headerRow}
             />
             <TableWrapper>
-                {division.map((team: any) => (
+                {division.map((team: MLB_Team_Records_Type | NHL_Team_Records_Type) => {
+                    return (
                     <Row
-                        key={team.id}
                         data={teamRowData(team, sport)}
                         flexArr={colFlexSize(sport)}
                         textStyle={styles.text}
                         style={styles.teamRow}
-                    />))}
+                    />)})}
             </TableWrapper>
         </Table>
     )

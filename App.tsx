@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { homeNavDetails, mlbNavDetails, nhlNavDetails } from './standings/constants'
-import MLBStandings from './standings/MLB/MLBStandings'
-import NHLStandings from './standings/NHL/NHLStandings'
-import MLBSchedule from './standings/MLB/MLBSchedule'
-import NHLSchedule from './standings/NHL/NHLSchedule'
+import MLBStandings from './standings/MLB/Standings'
+import NHLStandings from './standings/NHL/Standings'
+import MLBSchedule from './standings/MLB/Schedule'
+import NHLSchedule from './standings/NHL/Schedule'
 import HomeScreen from './standings/HomeScreen'
 
 const Stack = createNativeStackNavigator()

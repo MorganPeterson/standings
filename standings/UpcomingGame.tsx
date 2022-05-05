@@ -6,10 +6,6 @@ import {
 } from 'react-native-table-component'
 import GameTime from './gameTime'
 
-interface ScheduleGame_Props {
-    game: MLB_Game | NHL_Schedule_Games
-}
-
 export default function UpcomingGame({ game }: ScheduleGame_Props) {
     const t: string = GameTime(game.gameDate)
 

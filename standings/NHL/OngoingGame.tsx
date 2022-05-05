@@ -6,10 +6,6 @@ import {
     TableWrapper
 } from 'react-native-table-component'
 
-interface OngoingGame_Props {
-    game: NHL_Schedule_Games
-}
-
 const colHeaderText = (linescore: NHL_Schedule_Linescore): string[] => {
     const periods: NHL_Linescore_Period[] = linescore.periods
     const returnArray: Array<string> = ['', '1', '2', '3']
@@ -32,7 +28,7 @@ const colFlexSize = (len: number): number[] => {
     return returnArray
 }
 
-const generateLinescore = (game: NHL_Schedule_Games, who: string): Array<string|number> => {
+const generateLinescore = (game: NHL_Schedule_Game, who: string): Array<string|number> => {
     const resultArray: Array<string|number> = []
     if (who === 'away') {
         resultArray.push(game.teams.away.team.name)
@@ -58,7 +54,7 @@ const generateLinescore = (game: NHL_Schedule_Games, who: string): Array<string|
     return resultArray
 }
 
-export default function OngoingGame({ game }: OngoingGame_Props) {
+export default function OngoingGame({ game }: NHL_OngoingGame_Props) {
     return (
         <View style={styles.view}>
             { game.linescore.currentPeriodTimeRemaining === 'Final'

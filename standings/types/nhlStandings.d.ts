@@ -43,3 +43,10 @@ interface NHL_League_Record_Type extends League_Record_Type {
     type: string
 }
 
+interface Conference_Type {
+    [index: string]: NHL_Team_Records_Type[]
+}
+
+interface Get_Standings_Type {
+    [index: string]: Conference_Type
+}

@@ -1,15 +1,3 @@
-const AL: LeagueDetails = {
-    id: 103,
-    title: 'American League',
-    color: 'red'
-}
-
-const NL: LeagueDetails = {
-    id: 104,
-    title: 'National League',
-    color: 'blue'
-}
-
 const headerColor = (id: number): object => ({
     color: 'white',
     backgroundColor: id === AL.id ? AL.color : NL.color
