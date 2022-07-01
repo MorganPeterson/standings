@@ -23,12 +23,7 @@ export default function ScheduleDay({ today }: ScheduleDay_Props) {
         <View>
             <Text style={styles.dateText}>{today.date}</Text>
             { upcoming.map((g: MLB_Schedule_Game) => <UpcomingGame game={g} />) }
-            { ongoing.map((g: MLB_Schedule_Game) => <OngoingGame
-                    homeTeam={g.teams.home.team.name}
-                    awayTeam={g.teams.away.team.name}
-                    gamePk={g.gamePk}
-                    status={g.status.abstractGameState}
-                />)}
+            { ongoing.map((g: MLB_Schedule_Game) => <OngoingGame game={g} />)}
         </View>
     )
 }

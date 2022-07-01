@@ -1,5 +1,10 @@
 import React from 'react'
-import { SafeAreaView, Pressable, Text, StyleSheet } from 'react-native'
+import {
+    SafeAreaView,
+    Pressable,
+    Text,
+    StyleSheet
+} from 'react-native'
 
 export default React.memo(function HomeScreen({ navigation, navDetails }: any) {
     return (

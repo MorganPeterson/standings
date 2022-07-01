@@ -20,8 +20,8 @@ export default function ScheduleDay({ today }: NHL_ScheduleDay_Props) {
     return (
         <View>
             <Text style={styles.dateText}>{today.date}</Text>
-            { upcoming.map((g: NHL_Schedule_Game) => <UpcomingGame key={g.gamePk} game={g} />) }
             { ongoing.map((g: NHL_Schedule_Game) => <OngoingGame key={g.gamePk} game={g} />)}
+            { upcoming.map((g: NHL_Schedule_Game) => <UpcomingGame key={g.gamePk} game={g} />) }
         </View>
     )
 }

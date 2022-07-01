@@ -28,59 +28,60 @@ const colFlexSize = (len: number): number[] => {
     return returnArray
 }
 
-const generateLinescore = (game: NHL_Schedule_Game, who: string): Array<string|number> => {
-    const resultArray: Array<string|number> = []
-    if (who === 'away') {
-        resultArray.push(game.teams.away.team.name)
-        game.linescore.periods.forEach(period => resultArray.push(period.away.goals))
-        for (let i = resultArray.length; i < 4; i++) {
-            resultArray.push(0)
-        }
-        if (game.linescore.hasShootout)
-            resultArray.push(game.linescore.shootoutInfo.away.scores)
-        resultArray.push(game.teams.away.score)
-    }
-    if (who === 'home') {
-        resultArray.push(game.teams.home.team.name)
-        game.linescore.periods.forEach(period => resultArray.push(period.home.goals))
-        for (let i = resultArray.length; i < 4; i++) {
-            resultArray.push(0)
-        }
-        if (game.linescore.hasShootout)
-            resultArray.push(game.linescore.shootoutInfo.home.scores)
-        resultArray.push(game.teams.home.score)
+const generateLinescore = (game: NHL_Schedule_Game): Array<Array<string|number>> => {
+    const away: Array<string|number> = [game.teams.away.team.name]
+    const home: Array<string|number> = [game.teams.home.team.name]
+
+    game.linescore.periods.forEach((period: NHL_Linescore_Period) => {
+        away.push(period.away.goals)
+        home.push(period.home.goals)
+    })
+
+    for (let i = away.length; i < 4; i++) {
+        away.push(0)
+        home.push(0)
     }
 
-    return resultArray
+    if (game.linescore.hasShootout) {
+        away.push(game.linescore.shootoutInfo.away.scores)
+        home.push(game.linescore.shootoutInfo.home.scores)
+    }
+
+    away.push(game.teams.away.score)
+    home.push(game.teams.home.score)
+
+    return [away, home]
 }
 
 export default function OngoingGame({ game }: NHL_OngoingGame_Props) {
+    const linescore: Array<Array<string|number>> = generateLinescore(game)
+    const timeRemaining: string = game.linescore.currentPeriodTimeRemaining
+    const period: string = game.linescore.currentPeriodOrdinal
+    const flexSize: number = game.linescore.periods.length
+
     return (
         <View style={styles.view}>
             { game.linescore.currentPeriodTimeRemaining === 'Final'
-                ? <Text style={styles.period}>{`${game.linescore.currentPeriodTimeRemaining}`}</Text>
-                : <Text style={styles.period}>{`${game.linescore.currentPeriodTimeRemaining} ${game.linescore.currentPeriodOrdinal}`}</Text>
+                ? <Text style={styles.period}>{`${timeRemaining}`}</Text>
+                : <Text style={styles.period}>{`${timeRemaining} ${period}`}</Text>
             }
             <Table style={styles.divisionTable}>
                 <Row
                     data={colHeaderText(game.linescore)}
-                    flexArr={colFlexSize(game.linescore.periods.length)}
+                    flexArr={colFlexSize(flexSize)}
                     textStyle={styles.headerText}
                     style={styles.headerRow}
                 />
                 <TableWrapper>
-                    <Row
-                        data={generateLinescore(game, 'away')}
-                        flexArr={colFlexSize(game.linescore.periods.length)}
-                        textStyle={styles.rowText}
-                        style={styles.headerRow}
-                    />
-                    <Row
-                        data={generateLinescore(game, 'home')}
-                        flexArr={colFlexSize(game.linescore.periods.length)}
-                        textStyle={styles.rowText}
-                        style={styles.headerRow}
-                    />
+                    {linescore.map((score: Array<string|number>) => {
+                        return (
+                            <Row
+                                data={score}
+                                flexArr={colFlexSize(flexSize)}
+                                textStyle={styles.rowText}
+                                style={styles.headerRow}
+                            />)
+                    })}
                 </TableWrapper>
             </Table>
         </View>

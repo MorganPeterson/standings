@@ -8,22 +8,28 @@ import GameTime from './gameTime'
 
 export default function UpcomingGame({ game }: ScheduleGame_Props) {
     const t: string = GameTime(game.gameDate)
+    const teamNames: Array<{id: number, name: string}> = [{
+        id: game.teams.away.team.id,
+        name: game.teams.away.team.name
+    },
+    {
+        id: game.teams.home.team.id,
+        name: game.teams.home.team.name
+    }]
 
     return (
         <View style={styles.view}>
             <Text style={styles.inning}>{t}</Text>
             <Table style={styles.divisionTable}>
                 <TableWrapper>
-                    <Row
-                        data={[game.teams.away.team.name]}
-                        textStyle={styles.rowText}
-                        style={styles.row}
-                    />
-                    <Row
-                        data={[game.teams.home.team.name]}
-                        textStyle={styles.rowText}
-                        style={styles.row}
-                    />
+                    {teamNames.map((team: {id: number, name: string}) => {
+                        return (
+                            <Row
+                                key={team.id}
+                                data={[team.name]}
+                                textStyle={styles.rowText}
+                                style={styles.row}
+                            />)})}
                 </TableWrapper>
             </Table>
         </View>

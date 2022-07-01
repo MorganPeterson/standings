@@ -5,7 +5,7 @@ import {
     AL,
     NL
 } from './constants'
-import ApiFetch from '../apiFetch'
+import ApiFetch from './apiFetch'
 
 function divisionName(id: number): string {
     switch (id) {

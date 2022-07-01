@@ -8,79 +8,91 @@ import {
 import GetMLBLinescore from '../getMLBLinescore'
 
 interface OngoingGame_Props {
-    gamePk: number
-    homeTeam: string
-    awayTeam: string
-    status: string
+    game: MLB_Schedule_Game
 }
 
-const colHeaderText = (): Array<string> => {
-    const r: Array<string> = ['', 'R', 'H', 'E']
-    return r
+type Linescore = Array<Array<string|number>>
+
+interface Current_Game_Linescore {
+    linescore: Linescore
+    inning: number
+    inningState: string
+    inningOrdinal: string
 }
 
-const colFlexSize = (): number[] => {
-    const r: Array<number> = [4, 1, 1, 1]
-    return r
+const colHeaderText: Array<string> = ['', 'R', 'H', 'E']
+const colFlexSize: Array<number> = [4, 1, 1, 1]
+
+const generateLinescore = (game: MLB_Schedule_Game, g: MLB_Ongoing_Game): Linescore => {
+    return g === undefined
+        ? [[game.teams.away.team.name, 0,0,0], [game.teams.home.team.name, 0,0,0]]
+        : [
+            [
+                game.teams.away.team.name,
+                g.teams.away.runs,
+                g.teams.away.hits,
+                g.teams.away.errors
+            ],
+            [
+                game.teams.home.team.name,
+                g.teams.home.runs,
+                g.teams.home.hits,
+                g.teams.home.errors
+            ]
+          ]
 }
 
-const generateLinescore = (score: MLB_Ongoing_Teams | undefined, team: string, who: string): Array<string|number> => {
-    const resultArray: Array<string|number> = [team]
+export default function OngoingGame({ game }: OngoingGame_Props) {
+    const [data, setData] = useState<Current_Game_Linescore>({
+        linescore: [],
+        inning: 1,
+        inningState: 'Top',
+        inningOrdinal: '1st'
+    })
 
-    if (score === undefined)
-        return resultArray.concat([0,0,0])
-
-    if (who === 'away') {
-        resultArray.push(score.away.runs)
-        resultArray.push(score.away.hits)
-        resultArray.push(score.away.errors)
-    } else {
-        resultArray.push(score.home.runs)
-        resultArray.push(score.home.hits)
-        resultArray.push(score.home.errors)
-    }
-    return resultArray
-}
-
-export default function OngoingGame({ gamePk, homeTeam, awayTeam, status }: OngoingGame_Props) {
-    const [data, setData] = useState<MLB_Ongoing_Game>()
     useEffect(() => {
-        GetMLBLinescore(gamePk).then((game: MLB_Ongoing_Game) => setData(game))
+        GetMLBLinescore(game.gamePk)
+        .then((g: MLB_Ongoing_Game) => {
+            const linescore: Linescore = generateLinescore(game, g)
+            setData({
+                linescore,
+                inning: g.currentInning,
+                inningState: g.inningState,
+                inningOrdinal: g.currentInningOrdinal
+            })
+        })
         return () => {
-            setData(undefined)
+            setData({} as Current_Game_Linescore)
         }
     }, [])
 
     return (
         <View style={styles.view}>
-            { status === 'Final'
+            { game.status.detailedState === 'Final'
                 ? <Text style={styles.inning} >
-                    {`${status} - ${data?.currentInning || '1'} innings`}
+                    {`${game.status.detailedState} - ${data.inning} innings`}
                 </Text>
                 : <Text style={styles.inning}>
-                    {`${data?.inningState || 'Top'} of the ${data?.currentInningOrdinal || '1st'}`}
+                    {`${game.status.detailedState} - ${data.inningState || 'Top'} of the ${data.inningOrdinal || '1st'}`}
                 </Text>
             }
             <Table style={styles.divisionTable}>
                 <Row
-                    data={colHeaderText()}
-                    flexArr={colFlexSize()}
+                    data={colHeaderText}
+                    flexArr={colFlexSize}
                     textStyle={styles.headerText}
                     style={styles.headerRow}
                 />
                 <TableWrapper>
-                    <Row
-                        data={generateLinescore(data?.teams, awayTeam, 'away')}
-                        flexArr={colFlexSize()}
-                        textStyle={styles.rowText}
-                        style={styles.row}
-                    />
-                    <Row
-                        data={generateLinescore(data?.teams, homeTeam, 'home')}
-                        flexArr={colFlexSize()}
-                        textStyle={styles.rowText}
-                        style={styles.row}
-                    />
+                    { data.linescore.map((team: Array<string|number>) => {
+                        return (
+                            <Row
+                                data={team}
+                                flexArr={colFlexSize}
+                                textStyle={styles.rowText}
+                                style={styles.row}
+                            />)
+                    })}
                 </TableWrapper>
             </Table>
         </View>
